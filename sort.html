@@ -69,28 +69,32 @@
 
     // this code is not beautiful, actually..
     // but it animates all the moves using translateX property
-    for (let i = 0; i < moves.length; i++) {
-        setTimeout(() => {
-            const from = document.getElementById(moves[i].from)
-            const to = document.getElementById(moves[i].to)
+    function animate() {
+        for (let i = 0; i < moves.length; i++) {
+            setTimeout(() => {
+                const from = document.getElementById(moves[i].from)
+                const to = document.getElementById(moves[i].to)
 
-            if (from.style.transform) {
-                from.style.transform =
-                    `translateX(${Number(from.style.transform.split('(')[1].split('p')[0]) + 10}px)`
-            } else {
-                from.style.transform = `translateX(10px)`
-            }
+                if (from.style.transform) {
+                    from.style.transform =
+                        `translateX(${Number(from.style.transform.split('(')[1].split('p')[0]) + 10}px)`
+                } else {
+                    from.style.transform = `translateX(10px)`
+                }
 
-            if (to.style.transform) {
-                to.style.transform =
-                    `translateX(${Number(to.style.transform.split('(')[1].split('p')[0]) - 10}px)`
-            } else {
-                to.style.transform = `translateX(-10px)`
-            }
+                if (to.style.transform) {
+                    to.style.transform =
+                        `translateX(${Number(to.style.transform.split('(')[1].split('p')[0]) - 10}px)`
+                } else {
+                    to.style.transform = `translateX(-10px)`
+                }
 
-            const fromId = from.id
-            from.id = to.id
-            to.id = fromId
-        }, 1 * i)
+                const fromId = from.id
+                from.id = to.id
+                to.id = fromId
+            }, 1 * i)
+        }
     }
+    
+    setTimeout(animate, 1500);
 </script>
