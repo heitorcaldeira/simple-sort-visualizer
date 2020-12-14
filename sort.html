@@ -1,0 +1,96 @@
+<style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .wrapper {
+        display: flex;
+    }
+
+    .bar {
+        background: black;
+        width: 10px;
+        transition: all .1s;
+    }
+</style>
+
+<div id="app"></div>
+
+<script>
+    // create elements with random height
+    const els = []
+    for (let i = 0; i < Math.floor(window.innerWidth / 10); i++) {
+        els.push(Math.round(Math.random() * window.innerHeight))
+    }
+
+    // draw elements on the window
+    function draw(arr) {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('wrapper');
+        for (let i = 0; i < arr.length; i++) {
+            const el = document.createElement('div')
+            el.className = 'bar'
+            el.id = i
+            el.style.height = `${arr[i]}px`
+
+            wrapper.appendChild(el);
+        }
+
+        document.getElementById('app').appendChild(wrapper)
+    }
+
+    // a simple sort algorithm that returns all necessary moves to sort the array
+    // ps: I made this algorithm by myself, but I think its like a bubble sort algorithm
+    function sort(arr) {
+        let moves = []
+        let r = [...arr]
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr.length; j++) {
+                if (j < arr.length - 1 && r[j] > r[j + 1]) {
+                    let c = r[j]
+                    r[j] = r[j + 1]
+                    r[j + 1] = c
+
+                    moves.push({
+                        from: j,
+                        to: j + 1
+                    })
+                }
+            }
+        }
+
+        return moves;
+    }
+
+    draw(els)
+    const moves = sort(els)
+
+    // this code is not beautiful, actually..
+    // but it animate all the moves using translateX property
+    for (let i = 0; i < moves.length; i++) {
+        setTimeout(() => {
+            const from = document.getElementById(moves[i].from)
+            const to = document.getElementById(moves[i].to)
+
+            if (from.style.transform) {
+                from.style.transform =
+                    `translateX(${Number(from.style.transform.split('(')[1].split('p')[0]) + 10}px)`
+            } else {
+                from.style.transform = `translateX(10px)`
+            }
+
+            if (to.style.transform) {
+                to.style.transform =
+                    `translateX(${Number(to.style.transform.split('(')[1].split('p')[0]) - 10}px)`
+            } else {
+                to.style.transform = `translateX(-10px)`
+            }
+
+            const fromId = from.id
+            from.id = to.id
+            to.id = fromId
+        }, 1 * i)
+    }
+</script>
